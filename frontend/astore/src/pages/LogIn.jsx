@@ -1,12 +1,41 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useContext } from "react"
+import { Link } from "react-router-dom"
+import { Navigate } from "react-router-dom"
+import UserContext from "../contexts/UserContext"
 
 const LogIn = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [redirect, setRedirect] = useState(false)
 
-  console.log(email);
-  console.log(password);
+  const { setUser } = useContext(UserContext)
+
+  console.log(email)
+  console.log(password)
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+
+    const response = await fetch("http://localhost:3000/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      body: JSON.stringify({ email, password }),
+      credentials: "include",
+    })
+
+    if (response.ok) {
+      const userInfo = await response.json()
+      setUser(userInfo)
+      setRedirect(true)
+    } else {
+      alert(await response.json())
+    }
+  }
+
+  //conditional rendering
+  if (redirect) return <Navigate to={"/"} />
 
   return (
     <div className="max-w-screen-xl mx-auto">
@@ -15,7 +44,7 @@ const LogIn = () => {
           Sign <span className="text-black">In</span>
         </h1>
 
-        <form className="space-y-2">
+        <form className="space-y-2" onSubmit={handleSubmit}>
           <label
             className="block uppercase tracking-wide text-gray-700 text-xs font-bold"
             htmlFor="email"
@@ -56,7 +85,7 @@ const LogIn = () => {
         </p>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default LogIn;
+export default LogIn
