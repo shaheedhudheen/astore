@@ -10,6 +10,7 @@ import Cart from "./pages/Cart"
 import Post from "./pages/Post"
 import UserContextProvider from "./contexts/UserContextProvider"
 import Sell from "./pages/Sell"
+import Edit from "./pages/Edit"
 
 const router = createBrowserRouter([
   {
@@ -39,6 +40,10 @@ const router = createBrowserRouter([
       {
         path: "post/:id",
         element: <Post />,
+      },
+      {
+        path: "post/:id/edit",
+        element: <Edit />,
       },
     ],
   },

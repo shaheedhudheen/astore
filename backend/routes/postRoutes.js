@@ -2,9 +2,19 @@ const express = require("express")
 const router = express.Router()
 const multer = require("multer")
 const upload = multer({ dest: "uploads/" })
-const { createPost } = require("../controllers/postController")
 const authMiddleware = require("../middlewares/authMiddleware")
+const {
+  createPost,
+  displayPosts,
+  singlePost,
+  editPost,
+} = require("../controllers/postController")
 
-router.post("/", authMiddleware, upload.single("photo"), createPost)
+router
+  .get("/", displayPosts)
+  .post("/", authMiddleware, upload.single("photo"), createPost)
+  .put("/", authMiddleware, upload.single("photo"), editPost)
+
+router.get("/:id", singlePost)
 
 module.exports = router

@@ -76,10 +76,10 @@ const userLogin = async (req, res) => {
       const options = {
         // current time + 3 (days) * 24 (hour) * 60 (min) * 60 (sec) * 1000 (milliseconds)
         expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-        // httpOnly: true,
+        httpOnly: true,
       }
 
-      res.cookie("token", token).json({
+      res.cookie("token", token, options).json({
         id: userDoc._id,
         username: userDoc.username,
       })
@@ -88,7 +88,7 @@ const userLogin = async (req, res) => {
     }
   } catch (error) {
     console.log(error)
-    res.status(400).json(error)
+    res.status(400)
   }
 }
 

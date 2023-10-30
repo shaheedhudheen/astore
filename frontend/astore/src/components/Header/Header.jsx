@@ -25,9 +25,11 @@ const Header = () => {
   }
 
   return (
-    <div className=" flex justify-around items-center py-2 shadow sticky z-50 top-0">
+    <div className=" flex justify-around items-center py-2 shadow sticky z-50 top-0 bg-white">
       <Link to="/">
-        <h1 className="text-2xl font-bold">AStore</h1>
+        <h1 className="text-2xl font-bold">
+          <span className="text-blue-700">AS</span>tore
+        </h1>
       </Link>
       <div>
         {pathname === "/" ? (
@@ -53,11 +55,11 @@ const Header = () => {
               style="bg-blue-700 hover:bg-blue-800"
               handleClick={handleLogout}
             />
-            {pathname === "/post" ? null : (
+            {pathname === "/" ? (
               <Link to="/post">
                 <Button name="SELL" style="bg-red-700 hover:bg-red-800" />
               </Link>
-            )}
+            ) : null}
           </div>
         ) : pathname === "/" ? (
           <div className="flex items-center space-x-2">

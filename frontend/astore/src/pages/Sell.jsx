@@ -8,7 +8,6 @@ const Sell = () => {
   const [photo, setPhoto] = useState(null)
   const [price, setPrice] = useState("")
   const [location, setLocation] = useState("")
-
   const [redirect, setRedirect] = useState(false)
 
   const handleSubmit = async (event) => {
@@ -41,7 +40,7 @@ const Sell = () => {
     <div className="max-w-screen-xl mx-auto">
       <div className="max-w-md  mx-auto my-8 space-y-5">
         <h1 className="text-3xl font-bold text-center text-blue-600">
-          Sell your <span className="text-black">Items</span>
+          Sell your <span className="text-black">Product</span>
         </h1>
         <form className="space-y-2 flex flex-col" onSubmit={handleSubmit}>
           <div>
@@ -56,14 +55,16 @@ const Sell = () => {
               placeholder="Category"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
+              required
             >
-              <option value="others">Other Items</option>
+              <option value="choose">Choose Category</option>
               <option value="automobile">Automobile</option>
               <option value="properties">Properties</option>
               <option value="mobiles">Mobiles</option>
               <option value="electronics">Electronics</option>
               <option value="fashion">Fashion</option>
               <option value="books">Books</option>
+              <option value="others">Other Items</option>
             </select>
           </div>
 
@@ -80,6 +81,7 @@ const Sell = () => {
               id="title"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
+              required
               className=" rounded py-3 px-4 focus:outline-none border border-gray-200 focus:border-gray-500 w-full"
             />
           </div>
@@ -97,6 +99,7 @@ const Sell = () => {
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
+              required
               className=" rounded py-3 px-4 focus:outline-none border border-gray-200 focus:border-gray-500 w-full"
             />
           </div>
@@ -131,6 +134,7 @@ const Sell = () => {
               id="price"
               value={price}
               onChange={(e) => setPrice(e.target.value)}
+              required
               className=" rounded py-3 px-4 focus:outline-none border border-gray-200 focus:border-gray-500 w-full"
             />
           </div>
@@ -147,6 +151,7 @@ const Sell = () => {
               id="location"
               value={location}
               onChange={(e) => setLocation(e.target.value)}
+              required
               className=" rounded py-3 px-4 focus:outline-none border border-gray-200 focus:border-gray-500 w-full"
             />
           </div>

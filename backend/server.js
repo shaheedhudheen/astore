@@ -3,6 +3,8 @@ require("dotenv").config()
 const cors = require("cors")
 const cookieParser = require("cookie-parser")
 const mongoose = require("mongoose")
+const app = express()
+const PORT = process.env.PORT
 
 const main = async () => {
   await mongoose.connect(process.env.MONGO_URL)
@@ -11,9 +13,6 @@ const main = async () => {
 main()
   .then(() => console.log("connected to mongo"))
   .catch((e) => console.error(e))
-
-const app = express()
-const PORT = process.env.PORT
 
 //middlewares
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }))
