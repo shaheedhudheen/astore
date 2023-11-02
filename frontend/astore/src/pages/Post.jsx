@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { Link, useParams } from "react-router-dom"
+import { Link, useParams, Navigate } from "react-router-dom"
 import Button from "../components/Button"
 import UserContext from "../contexts/UserContext"
 
@@ -7,6 +7,7 @@ const Post = () => {
   const { id } = useParams()
   const [postInfo, setPostInfo] = useState(null)
   const { user } = useContext(UserContext)
+  const [redirect, setRedirect] = useState(false)
 
   const getPostInfo = async () => {
     const response = await fetch(`http://localhost:3000/post/${id}`)
@@ -14,11 +15,23 @@ const Post = () => {
     setPostInfo(data)
   }
 
+  const handleDelete = async () => {
+    const response = await fetch(`http://localhost:3000/post/${id}`, {
+      method: "DELETE",
+      credentials: "include",
+    })
+
+    if (response.ok) {
+      setRedirect(true)
+    }
+  }
+
   useEffect(() => {
     getPostInfo()
   }, [])
 
   if (!postInfo) return null
+  if (redirect) return <Navigate to={`/`} />
 
   return (
     <div className="max-w-screen-xl mx-auto h-screen grid grid-cols-2">
@@ -73,15 +86,17 @@ const Post = () => {
 
         {user?.id === postInfo?.userId?._id && (
           <div className="space-x-4 py-2">
-            <Link
-              className="bg-green-300 px-4 py-2 rounded-lg text-lg font-semibold text-gray-700"
-              to={`/post/${postInfo._id}/edit`}
+            <Link to={`/post/${postInfo._id}/edit`}>
+              <button className="bg-green-300 px-4 py-2 rounded-lg text-lg font-semibold text-gray-700">
+                Edit
+              </button>
+            </Link>
+            <button
+              className="bg-red-400 px-4 py-2 rounded-lg text-lg font-semibold text-gray-700"
+              onClick={handleDelete}
             >
-              Edit
-            </Link>
-            <Link className="bg-red-400 px-4 py-2 rounded-lg text-lg font-semibold text-gray-700">
               Delete
-            </Link>
+            </button>
           </div>
         )}
       </div>

@@ -78,4 +78,33 @@ const editPost = async (req, res) => {
     res.status(400)
   }
 }
-module.exports = { createPost, displayPosts, singlePost, editPost }
+
+const deletePost = async (req, res) => {
+  //id of Post
+  const { id } = req.params
+
+  //user id from decoded jwt token
+  const { _id } = req.user
+
+  try {
+    //get post using item ID
+    const postDoc = await Post.findById(id)
+
+    //compare post userId to token id (to verify editing user is logged in user)
+    const isUser = JSON.stringify(_id) === JSON.stringify(postDoc.userId)
+
+    //checks user is valid or not
+    if (!isUser) {
+      return res.json("Invalid User")
+    }
+
+    const deletedPost = await Post.findByIdAndDelete(id)
+
+    res.json(deletedPost)
+  } catch (error) {
+    console.log(error)
+    res.status(400)
+  }
+}
+
+module.exports = { createPost, displayPosts, singlePost, editPost, deletePost }

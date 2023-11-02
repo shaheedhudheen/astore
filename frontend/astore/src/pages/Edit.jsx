@@ -29,15 +29,17 @@ const Edit = () => {
     getPostInfo()
   }, [])
 
+
+  
   const handleSubmit = async (event) => {
     const formData = new FormData()
+    formData.set("id", id)
     formData.set("category", category)
     formData.set("title", title)
     formData.set("description", description)
     formData.set("price", price)
     formData.set("location", location)
     formData.set("photo", photo[0])
-    formData.set("id", id)
 
     event.preventDefault()
 
