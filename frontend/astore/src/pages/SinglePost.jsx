@@ -2,12 +2,26 @@ import { useContext, useEffect, useState } from "react"
 import { Link, useParams, Navigate } from "react-router-dom"
 import Button from "../components/Button"
 import UserContext from "../contexts/UserContext"
+import useCartStore from "../utils/cartStore"
 
-const Post = () => {
+//!from zustand DOCS
+// function BearCounter() {
+//   const bears = useBearStore((state) => state.bears)
+//   return <h1>{bears} around here ...</h1>
+// }
+
+// function Controls() {
+//   const increasePopulation = useBearStore((state) => state.increasePopulation)
+//   return <button onClick={increasePopulation}>one up</button>
+// }
+
+const SinglePost = () => {
   const { id } = useParams()
   const [postInfo, setPostInfo] = useState(null)
   const { user } = useContext(UserContext)
   const [redirect, setRedirect] = useState(false)
+
+  const addToCart = useCartStore((state) => state.addItem)
 
   const getPostInfo = async () => {
     const response = await fetch(`http://localhost:3000/post/${id}`)
@@ -29,6 +43,10 @@ const Post = () => {
   useEffect(() => {
     getPostInfo()
   }, [])
+
+  const handleCartButton = () => {
+    addToCart(postInfo)
+  }
 
   if (!postInfo) return null
   if (redirect) return <Navigate to={`/`} />
@@ -61,7 +79,11 @@ const Post = () => {
           <p className="text-2xl font-bold text-gray-600">
             Price: ${postInfo.price}
           </p>
-          <Button name="Add To Cart" style="bg-blue-700" />
+          <Button
+            name="Add To Cart"
+            style="bg-blue-700"
+            handleClick={handleCartButton}
+          />
         </div>
 
         <div>
@@ -104,4 +126,4 @@ const Post = () => {
   )
 }
 
-export default Post
+export default SinglePost

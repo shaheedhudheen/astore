@@ -7,7 +7,7 @@ import Home from "./pages/Home"
 import LogIn from "./pages/LogIn"
 import Register from "./pages/Register"
 import Cart from "./pages/Cart"
-import Post from "./pages/Post"
+import SinglePost from "./pages/SinglePost.jsx"
 import UserContextProvider from "./contexts/UserContextProvider"
 import Sell from "./pages/Sell"
 import Edit from "./pages/Edit"
@@ -39,7 +39,7 @@ const router = createBrowserRouter([
       },
       {
         path: "post/:id",
-        element: <Post />,
+        element: <SinglePost />,
       },
       {
         path: "post/:id/edit",

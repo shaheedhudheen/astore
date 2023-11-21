@@ -2,6 +2,7 @@ import { useState, useContext } from "react"
 import { Link } from "react-router-dom"
 import { Navigate } from "react-router-dom"
 import UserContext from "../contexts/UserContext"
+import useCartStore from "../utils/cartStore"
 
 const LogIn = () => {
   const [email, setEmail] = useState("")
@@ -9,9 +10,7 @@ const LogIn = () => {
   const [redirect, setRedirect] = useState(false)
 
   const { setUser } = useContext(UserContext)
-
-  console.log(email)
-  console.log(password)
+  const clearCart = useCartStore((state) => state.clearCart)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -29,6 +28,7 @@ const LogIn = () => {
       const userInfo = await response.json()
       setUser(userInfo)
       setRedirect(true)
+      clearCart()
     } else {
       alert(await response.json())
     }
