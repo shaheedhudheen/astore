@@ -4,17 +4,6 @@ import Button from "../components/Button"
 import UserContext from "../contexts/UserContext"
 import useCartStore from "../utils/cartStore"
 
-//!from zustand DOCS
-// function BearCounter() {
-//   const bears = useBearStore((state) => state.bears)
-//   return <h1>{bears} around here ...</h1>
-// }
-
-// function Controls() {
-//   const increasePopulation = useBearStore((state) => state.increasePopulation)
-//   return <button onClick={increasePopulation}>one up</button>
-// }
-
 const SinglePost = () => {
   const { id } = useParams()
   const [postInfo, setPostInfo] = useState(null)
@@ -127,3 +116,13 @@ const SinglePost = () => {
 }
 
 export default SinglePost
+
+//!from zustand DOCS
+// function BearCounter() {
+//   const bears = useBearStore((state) => state.bears)
+//   return <h1>{bears} around here ...</h1>
+// }
+// function Controls() {
+//   const increasePopulation = useBearStore((state) => state.increasePopulation)
+//   return <button onClick={increasePopulation}>one up</button>
+// }
