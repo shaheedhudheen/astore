@@ -21,6 +21,7 @@ const userRegister = async (req, res) => {
 
     //! check user already exists
     const existingUser = await User.findOne({ username })
+    
     if (existingUser) {
       return res.status(401).json("A user with this Username already exists")
     }
@@ -58,7 +59,7 @@ const userLogin = async (req, res) => {
     }
     //! find user in DB
     const userDoc = await User.findOne({ email })
-    console.log(userDoc)
+
     //! if user not found
     if (!userDoc) {
       return res.status(400).json("Credentials doesn't match our records")

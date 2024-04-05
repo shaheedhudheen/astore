@@ -2,15 +2,13 @@ import { useContext, useEffect, useState } from "react"
 import { Link, useParams, Navigate } from "react-router-dom"
 import Button from "../components/Button"
 import UserContext from "../contexts/UserContext"
-import useCartStore from "../utils/cartStore"
+import useCart from "../utils/useCart"
 
 const SinglePost = () => {
   const { id } = useParams()
   const [postInfo, setPostInfo] = useState(null)
   const { user } = useContext(UserContext)
   const [redirect, setRedirect] = useState(false)
-
-  const addToCart = useCartStore((state) => state.addItem)
 
   const getPostInfo = async () => {
     const response = await fetch(`http://localhost:3000/post/${id}`)
@@ -33,8 +31,17 @@ const SinglePost = () => {
     getPostInfo()
   }, [])
 
-  const handleCartButton = () => {
-    addToCart(postInfo)
+  const addToCart = useCart((state) => state.addItem)
+
+  const handleCartButton = async () => {
+    const response = await fetch(`http://localhost:3000/cart/${id}`, {
+      credentials: "include",
+      method: 'POST'
+    })
+    if (response.ok) {
+      const item = await response.json()
+      addToCart(item)
+    }
   }
 
   if (!postInfo) return null

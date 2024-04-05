@@ -25,6 +25,8 @@ const userRoute = require("./routes/userRoutes")
 app.use("/", userRoute)
 const postRoute = require("./routes/postRoutes")
 app.use("/post", postRoute)
+const cartRoute = require("./routes/cartRoutes")
+app.use("/cart", cartRoute)
 
 app.listen(PORT, () => {
   console.log("listening to port 3000")

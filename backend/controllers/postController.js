@@ -1,5 +1,26 @@
 const Post = require("../models/postModel")
 
+const displayPosts = async (req, res) => {
+  try {
+    const posts = await Post.find().populate("userId")
+    res.json(posts)
+  } catch (error) {
+    console.log(error)
+    res.status(400)
+  }
+}
+
+const singlePost = async (req, res) => {
+  const { id } = req.params
+  try {
+    const post = await Post.findById(id).populate("userId", ["username"])
+    res.json(post)
+  } catch (error) {
+    console.log(error)
+    res.status(400)
+  }
+}
+
 const createPost = async (req, res) => {
   const { category, title, description, price, location } = req.body
   const { path } = req.file
@@ -19,27 +40,6 @@ const createPost = async (req, res) => {
   } catch (error) {
     res.status(400)
     console.log(error)
-  }
-}
-
-const displayPosts = async (req, res) => {
-  try {
-    const posts = await Post.find().populate("userId")
-    res.json(posts)
-  } catch (error) {
-    console.log(error)
-    res.status(400)
-  }
-}
-
-const singlePost = async (req, res) => {
-  const { id } = req.params
-  try {
-    const post = await Post.findById(id).populate("userId", ["username"])
-    res.json(post)
-  } catch (error) {
-    console.log(error)
-    res.status(400)
   }
 }
 
@@ -80,13 +80,12 @@ const editPost = async (req, res) => {
 }
 
 const deletePost = async (req, res) => {
-  //id of Post
-  const { id } = req.params
-
-  //user id from decoded jwt token
-  const { _id } = req.user
-
   try {
+    //id of Post
+    const { id } = req.params
+
+    //user id from decoded jwt token
+    const { _id } = req.user
     //get post using item ID
     const postDoc = await Post.findById(id)
 

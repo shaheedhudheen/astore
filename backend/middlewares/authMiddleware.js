@@ -1,27 +1,33 @@
 const jwt = require("jsonwebtoken")
 const User = require("../models/userModel")
 
-const auth = async (req, res, next) => {
-  //get token from cookie
-  const { token } = req.cookies
-  try {
-    //verify token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-    //get user info from token
-    req.user = await User.findById(decoded.id).select("-password")
+const verifyToken = async (req, res, next) => {
+
+  try {
+    //get token from cookie
+    const { token } = req.cookies
+
+    //check if token exists
+    if (!token) {
+      return res.status(401).json({ message: "Not authorized, Sign In" })
+    }
+
+    //verify token using async/await syntax
+    const decoded = await jwt.verify(token, process.env.JWT_SECRET)
+
+    // user info from token using findById method
+    //lean method to return a plain JS object instead of a mongoose document
+    req.user = await User.findById(decoded.id).select("-password").lean()
 
     next()
   } catch (error) {
     console.log(error)
-    res.status(401)
+    res.status(401).json({ message: "Not authorized" })
     throw new Error("Not authorized")
   }
 
-  if (!token) {
-    res.status(401)
-    throw new Error("No authorized, Sign In")
-  }
+ 
 }
 
-module.exports = auth
+module.exports = verifyToken

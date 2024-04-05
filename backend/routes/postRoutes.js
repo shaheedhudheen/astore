@@ -15,7 +15,7 @@ router
   .get("/", displayPosts)
   .post("/", authMiddleware, upload.single("photo"), createPost)
   .put("/", authMiddleware, upload.single("photo"), editPost)
-
-router.get("/:id", singlePost).delete("/:id", authMiddleware, deletePost)
+  .get("/:id", singlePost)
+  .delete("/:id", authMiddleware, deletePost)
 
 module.exports = router

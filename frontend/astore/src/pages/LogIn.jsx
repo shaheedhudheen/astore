@@ -2,7 +2,7 @@ import { useState, useContext } from "react"
 import { Link } from "react-router-dom"
 import { Navigate } from "react-router-dom"
 import UserContext from "../contexts/UserContext"
-import useCartStore from "../utils/cartStore"
+import useCart from "../utils/useCart"
 
 const LogIn = () => {
   const [email, setEmail] = useState("")
@@ -10,27 +10,50 @@ const LogIn = () => {
   const [redirect, setRedirect] = useState(false)
 
   const { setUser } = useContext(UserContext)
-  const clearCart = useCartStore((state) => state.clearCart)
+
+  const addToCart = useCart((state) => state.addItem)
+
+  const updateCart = async () => {
+    try {
+      const response = await fetch("http://localhost:3000/cart", {
+        credentials: "include",
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        // Check if the items property exists
+        if (data?.items) {
+          data.items.map((item) => addToCart(item))
+        }
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
+    try {
+      event.preventDefault()
 
-    const response = await fetch("http://localhost:3000/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "Application/json",
-      },
-      body: JSON.stringify({ email, password }),
-      credentials: "include",
-    })
+      const response = await fetch("http://localhost:3000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "Application/json",
+        },
+        body: JSON.stringify({ email, password }),
+        credentials: "include",
+      })
 
-    if (response.ok) {
-      const userInfo = await response.json()
-      setUser(userInfo)
-      setRedirect(true)
-      clearCart()
-    } else {
-      alert(await response.json())
+      if (response.ok) {
+        const userInfo = await response.json()
+        setUser(userInfo)
+        updateCart()
+        setRedirect(true)
+      } else {
+        alert(await response.json())
+      }
+    } catch (error) {
+      console.error(error)
     }
   }
 
